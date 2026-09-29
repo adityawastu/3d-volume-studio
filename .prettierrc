@@ -1,0 +1,18 @@
+{
+  "plugins": ["prettier-plugin-blade", "prettier-plugin-tailwindcss"],
+  "printWidth": 140,
+  "tabWidth": 2,
+  "useTabs": false,
+  "singleQuote": true,
+  "semi": true,
+
+  "overrides": [
+    {
+      "files": ["**/*.blade.php"],
+      "options": {
+        "parser": "blade",
+        "bladePhpFormatting": "safe"
+      }
+    }
+  ]
+}
