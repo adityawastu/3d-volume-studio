@@ -142,7 +142,7 @@
       </div>
 
       @if ($orders->hasPages())
-        <div class="border-t border-slate-200 p-4">{{ $orders->links() }}</div>
+        <div class="border-t border-slate-200 px-5 py-4">{{ $orders->links('pagination.custom') }}</div>
       @endif
     </div>
   </div>
