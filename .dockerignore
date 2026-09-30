@@ -2,7 +2,6 @@
 .github
 node_modules
 vendor
-
 .env
 .env.*
 
@@ -12,4 +11,3 @@ storage/framework/sessions/*
 storage/framework/views/*
 
 npm-debug.log
-yarn-error.log
