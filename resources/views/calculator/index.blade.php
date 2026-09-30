@@ -5,6 +5,15 @@
 
 @section ('content')
   <div class="space-y-8">
+    <div class="mb-6">
+      <a
+        href="{{ route('orders.index') }}"
+        class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900"
+      >
+        <span aria-hidden="true">←</span>
+        <span>Kembali ke Orders</span>
+      </a>
+    </div>
     <div class="grid gap-6 xl:grid-cols-2">
       {{-- FORM INPUT --}}
       <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -192,10 +201,11 @@
             </div>
 
             {{-- DOWNLOAD QUOTATION --}}
+
             <button
               type="button"
               id="export-quotation"
-              class="w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+              class="w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
             >
               Download Quotation
             </button>
@@ -220,10 +230,14 @@
       <div class="absolute top-0 left-[-9999px]">
         <div id="quotation-card" class="shrink-0 bg-white p-10 text-slate-900" style="width: 720px">
           {{-- BRAND --}}
-          <div class="border-b border-slate-200 pb-6">
-            <p class="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">3D Printing Service</p>
-            <h2 class="mt-2 text-3xl font-bold">3D Volume Studio</h2>
-            <p class="mt-2 text-sm text-slate-500">Quotation Cetak 3D</p>
+          <div>
+            <p class="text-xs font-medium tracking-wider text-slate-500 uppercase">3D Volume Studio</p>
+
+            <h2 class="mt-1 text-2xl font-bold text-slate-900">Quotation</h2>
+
+            @isset ($calculation)
+              <p class="mt-1 text-sm font-medium text-slate-500">Ref: {{ $calculation->reference_no }}</p>
+            @endisset
           </div>
 
           {{-- DETAIL --}}
@@ -322,7 +336,8 @@
           const minutes = String(now.getMinutes()).padStart(2, '0');
           const seconds = String(now.getSeconds()).padStart(2, '0');
 
-          const fileName = `quotation-${year}-${month}-${day}_${hours}-${minutes}-${seconds}.png`;
+          const referenceNo = @json ($calculation->reference_no ?? 'quotation');
+          const fileName = `Quotation-${referenceNo}.png`;
 
           link.download = fileName;
           link.href = dataUrl;

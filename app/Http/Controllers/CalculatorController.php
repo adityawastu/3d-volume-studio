@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Calculation;
 use Illuminate\Http\Request;
 
 class CalculatorController extends Controller
@@ -32,7 +33,6 @@ class CalculatorController extends Controller
         $quantity = (int) $request->quantity;
 
         $totalMinutes = ($hours * 60) + $minutes;
-
         $ratio = $totalMinutes / $weight;
 
         if ($ratio < $ratioLimit) {
@@ -44,14 +44,28 @@ class CalculatorController extends Controller
         }
 
         $fee = $basePrice * ($feePercentage / 100);
-
-        $pricePerItem = $basePrice + $fee + $fixedCost;
-
-        $pricePerItem = round($pricePerItem);
-
+        $pricePerItem = round($basePrice + $fee + $fixedCost);
         $totalPrice = $pricePerItem * $quantity;
 
+        $calculation = Calculation::create([
+            'reference_no' => $this->generateReference(),
+            'weight' => $weight,
+            'hours' => $hours,
+            'minutes' => $minutes,
+            'total_minutes' => $totalMinutes,
+            'ratio' => $ratio,
+            'method' => $method,
+            'base_price' => $basePrice,
+            'fee' => $fee,
+            'fixed_cost' => $fixedCost,
+            'price_per_item' => $pricePerItem,
+            'quantity' => $quantity,
+            'total_price' => $totalPrice,
+            'status' => 'pending',
+        ]);
+
         return view('calculator.index', compact(
+            'calculation',
             'weight',
             'hours',
             'minutes',
@@ -65,5 +79,12 @@ class CalculatorController extends Controller
             'pricePerItem',
             'totalPrice'
         ));
+    }
+
+    private function generateReference(): string
+    {
+        $nextId = (Calculation::max('id') ?? 0) + 1;
+
+        return 'ORD-' . now()->format('Ymd') . '-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
     }
 }
