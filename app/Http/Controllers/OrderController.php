@@ -8,9 +8,17 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Calculation::latest()->paginate(15);
+        $search = request('q');
 
-        return view('orders.index', compact('orders'));
+        $orders = Calculation::query()
+            ->when($search, function ($query, $search) {
+                $query->where('reference_no', 'like', '%' . $search . '%');
+            })
+            ->latest()
+            ->paginate(5)
+            ->withQueryString();
+
+        return view('orders.index', compact('orders', 'search'));
     }
 
     public function fix(Calculation $calculation)

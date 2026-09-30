@@ -8,6 +8,7 @@ class Calculation extends Model
 {
     protected $fillable = [
         'reference_no',
+        'submission_token',
         'weight',
         'hours',
         'minutes',

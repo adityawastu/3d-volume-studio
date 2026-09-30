@@ -5,13 +5,22 @@
 
 @section ('content')
   <div class="space-y-8">
-    <div class="mb-6">
+    {{-- back to order --}}
+    <div class="mb-6 flex items-center justify-between gap-4">
       <a
         href="{{ route('orders.index') }}"
         class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900"
       >
         <span aria-hidden="true">←</span>
         <span>Kembali ke Orders</span>
+      </a>
+
+      <a
+        href="{{ route('calculator.index') }}"
+        class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+      >
+        <span aria-hidden="true">↻</span>
+        <span>Order Baru</span>
       </a>
     </div>
     <div class="grid gap-6 xl:grid-cols-2">
@@ -22,8 +31,9 @@
           <p class="mt-1 text-sm text-slate-500">Masukkan data hasil slicing model.</p>
         </div>
 
-        <form action="{{ route('calculator.calculate') }}" method="POST" class="space-y-5">
+        <form id="calculator-form" action="{{ route('calculator.calculate') }}" method="POST">
           @csrf
+          <input type="hidden" name="submission_token" value="{{ $submissionToken }}" />
 
           {{-- BERAT --}}
           <div>
@@ -40,7 +50,8 @@
                 class="min-w-0 flex-1 rounded-l-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 required
               />
-              <span class="flex items-center rounded-r-xl border border-l-0 border-slate-300 bg-slate-50 px-4 text-sm text-slate-500"
+              <span
+                class="flex items-center rounded-r-xl border border-l-0 border-slate-300 bg-slate-50 px-4 text-sm text-slate-500"
                 >gram</span
               >
             </div>
@@ -105,12 +116,15 @@
             </div>
           @endif
 
-          <button
-            type="submit"
-            class="w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 focus:outline-none"
-          >
-            Hitung Harga
-          </button>
+          <div class="mt-5">
+            <button
+              type="submit"
+              id="calculate-button"
+              class="w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              Hitung Harga
+            </button>
+          </div>
         </form>
       </section>
 
@@ -302,58 +316,65 @@
 @push ('scripts')
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      const calculatorForm = document.getElementById('calculator-form');
+      const calculateButton = document.getElementById('calculate-button');
+
+      if (calculatorForm && calculateButton) {
+        calculatorForm.addEventListener('submit', function (event) {
+          if (calculatorForm.dataset.submitting === 'true') {
+            event.preventDefault();
+            return;
+          }
+
+          calculatorForm.dataset.submitting = 'true';
+
+          calculateButton.disabled = true;
+          calculateButton.textContent = 'Menghitung...';
+        });
+      }
+
       const exportButton = document.getElementById('export-quotation');
       const quotationCard = document.getElementById('quotation-card');
 
-      if (!exportButton || !quotationCard) {
-        return;
+      if (exportButton && quotationCard) {
+        exportButton.addEventListener('click', async function () {
+          try {
+            exportButton.disabled = true;
+            exportButton.textContent = 'Membuat gambar...';
+
+            const dataUrl = await window.htmlToImage.toPng(quotationCard, {
+              width: 720,
+              height: quotationCard.scrollHeight,
+              pixelRatio: 2,
+              backgroundColor: '#ffffff',
+              cacheBust: true,
+              style: {
+                margin: '0',
+                transform: 'none',
+              },
+            });
+
+            const referenceNo = @json ($calculation->reference_no ?? 'quotation');
+            const fileName = `Quotation-${referenceNo}.png`;
+
+            const link = document.createElement('a');
+
+            link.download = fileName;
+            link.href = dataUrl;
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } catch (error) {
+            console.error('Gagal membuat quotation:', error);
+            alert('Gagal membuat gambar quotation.');
+          } finally {
+            exportButton.disabled = false;
+            exportButton.textContent = 'Download Quotation';
+          }
+        });
       }
-
-      exportButton.addEventListener('click', async function () {
-        try {
-          exportButton.disabled = true;
-          exportButton.textContent = 'Membuat gambar...';
-
-          const dataUrl = await window.htmlToImage.toPng(quotationCard, {
-            width: 720,
-            height: quotationCard.scrollHeight,
-            pixelRatio: 2,
-            backgroundColor: '#ffffff',
-            cacheBust: true,
-            style: {
-              margin: '0',
-              transform: 'none',
-            },
-          });
-
-          const link = document.createElement('a');
-          const now = new Date();
-
-          const year = now.getFullYear();
-          const month = String(now.getMonth() + 1).padStart(2, '0');
-          const day = String(now.getDate()).padStart(2, '0');
-          const hours = String(now.getHours()).padStart(2, '0');
-          const minutes = String(now.getMinutes()).padStart(2, '0');
-          const seconds = String(now.getSeconds()).padStart(2, '0');
-
-          const referenceNo = @json ($calculation->reference_no ?? 'quotation');
-          const fileName = `Quotation-${referenceNo}.png`;
-
-          link.download = fileName;
-          link.href = dataUrl;
-
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        } catch (error) {
-          console.error('Gagal membuat quotation:', error);
-          alert('Gagal membuat gambar quotation.');
-        } finally {
-          exportButton.disabled = false;
-          exportButton.textContent = 'Download Quotation';
-        }
-      });
     });
+    console.log('Script kalkulator aktif');
   </script>
-
 @endpush

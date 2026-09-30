@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Calculation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CalculatorController extends Controller
 {
     public function index()
     {
-        return view('calculator.index');
+        $submissionToken = (string) Str::uuid();
+        return view('calculator.index', compact('submissionToken'));
     }
 
     public function calculate(Request $request)
     {
         $request->validate([
+            'submission_token' => ['required', 'uuid'],
             'weight' => ['required', 'numeric', 'min:0.01'],
             'hours' => ['required', 'integer', 'min:0'],
             'minutes' => ['required', 'integer', 'min:0', 'max:59'],
@@ -47,8 +50,7 @@ class CalculatorController extends Controller
         $pricePerItem = round($basePrice + $fee + $fixedCost);
         $totalPrice = $pricePerItem * $quantity;
 
-        $calculation = Calculation::create([
-            'reference_no' => $this->generateReference(),
+        $data = [
             'weight' => $weight,
             'hours' => $hours,
             'minutes' => $minutes,
@@ -61,11 +63,25 @@ class CalculatorController extends Controller
             'price_per_item' => $pricePerItem,
             'quantity' => $quantity,
             'total_price' => $totalPrice,
-            'status' => 'pending',
-        ]);
+        ];
+
+        $calculation = Calculation::where('submission_token', $request->submission_token)->first();
+
+        if ($calculation) {
+            $calculation->update($data);
+        } else {
+            $calculation = Calculation::create(array_merge($data, [
+                'submission_token' => $request->submission_token,
+                'reference_no' => $this->generateReference(),
+                'status' => 'pending',
+            ]));
+        }
+
+        $submissionToken = $request->submission_token;
 
         return view('calculator.index', compact(
             'calculation',
+            'submissionToken',
             'weight',
             'hours',
             'minutes',
