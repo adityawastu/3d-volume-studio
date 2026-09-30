@@ -27,7 +27,7 @@
                 min="0.01"
                 step="0.01"
                 value="{{ old('weight', $weight ?? '') }}"
-                placeholder="Contoh: 79"
+                placeholder="Masukkan Berat"
                 class="min-w-0 flex-1 rounded-l-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 required
               />
@@ -275,7 +275,7 @@
           <div class="mt-10 border-t border-slate-200 pt-5">
             <p class="text-xs leading-5 text-slate-400">Harga dapat berubah apabila terdapat perubahan desain, ukuran, material, atau parameter printing.</p>
 
-            <p class="mt-2 text-xs leading-5 text-slate-400">Jika rasio waktu cetak terhadap berat di bawah 2,5, perhitungan menggunakan harga per gram. Jika rasio berada di atas atau sama dengan 2,5, perhitungan menggunakan harga berdasarkan waktu cetak. Metode ini digunakan karena beberapa model dapat memiliki berat rendah tetapi membutuhkan waktu cetak yang lama.</p>
+            <p class="mt-2 text-xs leading-5 text-slate-400">Untuk harga yang kompetitif, jika rasio waktu cetak terhadap berat di bawah 2,5, perhitungan menggunakan harga per gram. Jika rasio berada di atas atau sama dengan 2,5, perhitungan menggunakan harga berdasarkan waktu cetak. Metode ini digunakan karena beberapa model dapat memiliki berat rendah tetapi membutuhkan waktu cetak yang lama.</p>
           </div>
         </div>
       </div>
