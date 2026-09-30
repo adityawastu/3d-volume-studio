@@ -167,7 +167,7 @@
             </div>
 
             {{-- DETAIL BIAYA --}}
-            <div class="overflow-hidden rounded-xl border border-slate-200">
+            {{-- <div class="overflow-hidden rounded-xl border border-slate-200">
               <div class="border-b border-slate-200 bg-slate-50 px-4 py-3">
                 <p class="text-sm font-semibold text-slate-900">Detail Biaya</p>
               </div>
@@ -188,7 +188,7 @@
                   <span class="font-medium text-slate-900">Rp{{ number_format($fixedCost, 0, ',', '.') }}</span>
                 </div>
               </div>
-            </div>
+            </div> --}}
 
             {{-- HARGA PCS --}}
             <div>
@@ -303,7 +303,7 @@
           <div class="mt-10 border-t border-slate-200 pt-5">
             <p class="text-xs leading-5 text-slate-400">Harga dapat berubah apabila terdapat perubahan desain, ukuran, material, atau parameter printing.</p>
 
-            <p class="mt-2 text-xs leading-5 text-slate-400">Untuk harga yang kompetitif, jika rasio waktu cetak terhadap berat di bawah 2,5, perhitungan menggunakan harga per gram. Jika rasio berada di atas atau sama dengan 2,5, perhitungan menggunakan harga berdasarkan waktu cetak. Metode ini digunakan karena beberapa model dapat memiliki berat rendah tetapi membutuhkan waktu cetak yang lama.</p>
+            <p class="mt-2 text-xs leading-5 text-slate-400">Untuk harga yang kompetitif, jika rasio waktu cetak terhadap berat di bawah 2,5, perhitungan menggunakan harga per gram. Jika rasio berada di atas atau sama dengan 2,5 maka perhitungan menggunakan harga berdasarkan waktu cetak. Metode ini digunakan karena beberapa model dapat memiliki berat rendah tetapi membutuhkan waktu cetak yang lama.</p>
           </div>
         </div>
       </div>

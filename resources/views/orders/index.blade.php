@@ -43,7 +43,7 @@
           href="{{ route('calculator.index') }}"
           class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
         >
-          Buat Perhitungan
+          Hitung Harga
         </a>
       </div>
     </div>
