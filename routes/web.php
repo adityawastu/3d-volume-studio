@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])
@@ -36,3 +37,15 @@ Route::patch('/finance/expenses/{expense}', [ExpenseController::class, 'update']
 
 Route::delete('/finance/expenses/{expense}', [ExpenseController::class, 'destroy'])
     ->name('finance.expenses.destroy');
+
+Route::get('/finance/incomes', [IncomeController::class, 'index'])
+    ->name('finance.incomes.index');
+
+Route::post('/finance/incomes', [IncomeController::class, 'store'])
+    ->name('finance.incomes.store');
+
+Route::post('/finance/incomes/import/preview', [IncomeController::class, 'previewImport'])
+    ->name('finance.incomes.import.preview');
+
+Route::post('/finance/incomes/import/confirm', [IncomeController::class, 'confirmImport'])
+    ->name('finance.incomes.import.confirm');

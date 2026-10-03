@@ -44,10 +44,12 @@
           </summary>
 
           <div class="mt-1 ml-4 space-y-1 pl-3">
-            <div class="flex items-center justify-between rounded-xl px-4 py-2.5 text-sm text-slate-500">
-              <span>Pemasukan</span>
-              <span class="text-[10px] uppercase">Soon</span>
-            </div>
+            <a
+              href="{{ route('finance.incomes.index') }}"
+              class="flex items-center rounded-xl px-4 py-2.5 text-sm font-medium transition {{ request()->routeIs('finance.incomes.*') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}"
+            >
+              Pemasukan
+            </a>
 
             <a
               href="{{ route('finance.expenses.index') }}"
