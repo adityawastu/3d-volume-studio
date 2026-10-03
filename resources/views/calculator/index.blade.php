@@ -8,7 +8,7 @@
     {{-- BACK TO ORDER --}}
     <div class="mb-6 flex items-center justify-between gap-4">
       <a
-        id="new-order-link"
+        id="back-to-order"
         href="{{ route('orders.index') }}"
         class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900"
       >
@@ -873,7 +873,7 @@
       }
 
       // =========================================================
-      // [27] ORDER BARU
+      // [27] ORDER BARU and Back To Order
       // =========================================================
       const newOrderLink = document.getElementById('new-order-link');
 
@@ -883,6 +883,13 @@
         });
       }
 
+      const backToOrder = document.getElementById('back-to-order');
+
+      if (backToOrder) {
+        backToOrder.addEventListener('click', function () {
+          clearSavedGcodeData();
+        });
+      }
       // =========================================================
       // [28] ANTI DOUBLE SUBMIT
       // G-code tidak dihapus di sini.
