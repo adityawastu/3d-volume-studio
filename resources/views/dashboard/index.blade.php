@@ -36,12 +36,11 @@
       <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 class="font-semibold">Kalkulator Harga</h3>
-
           <p class="mt-1 text-sm text-slate-500">Hitung harga cetak berdasarkan berat dan waktu printing.</p>
         </div>
 
         <a
-          href="{{ route('calculator.index') }}"
+          href="{{ route('calculator.create') }}"
           class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
         >
           Buka Kalkulator

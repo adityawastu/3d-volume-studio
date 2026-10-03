@@ -10,8 +10,13 @@ class CalculatorController extends Controller
 {
     public function index()
     {
+        $calculations = Calculation::latest()->paginate(10);
+        return view('calculator.index', compact('calculations'));
+    }
+
+    public function create (){
         $submissionToken = (string) Str::uuid();
-        return view('calculator.index', compact('submissionToken'));
+        return view('calculator.create', compact('submissionToken'));
     }
 
     public function calculate(Request $request)
@@ -21,7 +26,7 @@ class CalculatorController extends Controller
             'weight' => ['required', 'numeric', 'min:0.01'],
             'hours' => ['required', 'integer', 'min:0'],
             'minutes' => ['required', 'integer', 'min:0', 'max:59'],
-            'quantity' => ['required', 'integer', 'min:1'],
+            // 'quantity' => ['required', 'integer', 'min:1'],
         ]);
 
         $pricePerGram = 600;
@@ -33,7 +38,7 @@ class CalculatorController extends Controller
         $weight = (float) $request->weight;
         $hours = (int) $request->hours;
         $minutes = (int) $request->minutes;
-        $quantity = (int) $request->quantity;
+        // $quantity = (int) $request->quantity;
 
         $totalMinutes = ($hours * 60) + $minutes;
         $ratio = $totalMinutes / $weight;
@@ -48,7 +53,9 @@ class CalculatorController extends Controller
 
         $fee = $basePrice * ($feePercentage / 100);
         $pricePerItem = round($basePrice + $fee + $fixedCost);
-        $totalPrice = $pricePerItem * $quantity;
+        // $totalPrice = $pricePerItem * $quantity;
+        $totalPrice = $pricePerItem;
+
 
         $data = [
             'weight' => $weight,
@@ -61,7 +68,7 @@ class CalculatorController extends Controller
             'fee' => $fee,
             'fixed_cost' => $fixedCost,
             'price_per_item' => $pricePerItem,
-            'quantity' => $quantity,
+            // 'quantity' => $quantity,
             'total_price' => $totalPrice,
         ];
 
@@ -79,13 +86,13 @@ class CalculatorController extends Controller
 
         $submissionToken = $request->submission_token;
 
-        return view('calculator.index', compact(
+        return view('calculator.create', compact(
             'calculation',
             'submissionToken',
             'weight',
             'hours',
             'minutes',
-            'quantity',
+            // 'quantity',
             'totalMinutes',
             'ratio',
             'method',

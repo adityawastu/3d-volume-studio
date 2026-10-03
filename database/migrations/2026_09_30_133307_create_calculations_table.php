@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('fee', 15, 2);
             $table->decimal('fixed_cost', 15, 2);
             $table->decimal('price_per_item', 15, 2);
-            $table->unsignedInteger('quantity')->default(1);
+            // $table->unsignedInteger('quantity')->default(1);
             $table->decimal('total_price', 15, 2);
             $table->enum('status', ['pending', 'fixed', 'cancelled'])->default('pending');
             $table->timestamp('fixed_at')->nullable();

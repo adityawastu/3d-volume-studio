@@ -26,8 +26,15 @@
         </a>
 
         <a
+          href="{{ route('calculator.index') }}"
+          class="flex items-center rounded-xl px-4 py-3 text-sm font-medium transition {{ request()->routeIs('calculator.*') || request()->routeIs('calculator.*') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}"
+        >
+          Hitung Harga
+        </a>
+
+        <a
           href="{{ route('orders.index') }}"
-          class="flex items-center rounded-xl px-4 py-3 text-sm font-medium transition {{ request()->routeIs('orders.*') || request()->routeIs('calculator.*') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}"
+          class="flex items-center rounded-xl px-4 py-3 text-sm font-medium transition {{ request()->routeIs('orders.*') ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}"
         >
           Orders
         </a>

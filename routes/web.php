@@ -15,6 +15,8 @@ Route::get('/', [DashboardController::class, 'index'])
 Route::get('/calculator', [CalculatorController::class, 'index'])
     ->name('calculator.index');
 
+Route::get('/calculator/create', [CalculatorController::class, 'create'])->name('calculator.create');
+
 Route::post('/calculator', [CalculatorController::class, 'calculate'])
     ->name('calculator.calculate');
 
@@ -22,11 +24,7 @@ Route::post('/calculator', [CalculatorController::class, 'calculate'])
 Route::get('/orders', [OrderController::class, 'index'])
     ->name('orders.index');
 
-Route::patch('/orders/{calculation}/fix', [OrderController::class, 'fix'])
-    ->name('orders.fix');
 
-Route::patch('/orders/{calculation}/cancel', [OrderController::class, 'cancel'])
-    ->name('orders.cancel');
 
 //finance
 Route::get('/finance/expenses', [ExpenseController::class, 'index'])
@@ -34,7 +32,6 @@ Route::get('/finance/expenses', [ExpenseController::class, 'index'])
 
 Route::post('/finance/expenses', [ExpenseController::class, 'store'])
     ->name('finance.expenses.store');
-
 
 Route::patch('/finance/expenses/{expense}', [ExpenseController::class, 'update'])
     ->name('finance.expenses.update');
