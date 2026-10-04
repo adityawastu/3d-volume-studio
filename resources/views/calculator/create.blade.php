@@ -312,7 +312,7 @@
           <div class="space-y-4 py-8">
             {{-- BERAT ASLI --}}
             <div class="flex justify-between gap-8">
-              <span class="text-slate-500">Berat Asli</span>
+              <span class="text-slate-500">Berat Model</span>
               <span class="font-semibold">{{ number_format($weight, 2, ',', '.') }} gram</span>
             </div>
 
